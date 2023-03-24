@@ -26,8 +26,6 @@ import jakarta.validation.Valid;
 @Service
 public class AuthenticationService {
 
-	@Autowired @Qualifier("redis")
-	private RedisTemplate<String, String> template;
 
 	@Autowired
 	private AuthenticationRepository auRepo;
@@ -55,7 +53,7 @@ public class AuthenticationService {
 		RestTemplate template = new RestTemplate();
 
 		resp = template.exchange(req, String.class);
-		this.template.opsForValue().set("authenticated", user.ForUsernameToJSON().toString());
+		// this.template.opsForValue().set("authenticated", user.ForUsernameToJSON().toString());
 		//String payload = resp.getBody();
 		// JsonReader jsr = Json.createReader(new StringReader(payload));
 		// JsonObject jso = jsr.readObject();
