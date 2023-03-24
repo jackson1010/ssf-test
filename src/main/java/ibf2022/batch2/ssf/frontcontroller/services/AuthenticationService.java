@@ -17,6 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import ibf2022.batch2.ssf.frontcontroller.Model.User;
+import ibf2022.batch2.ssf.frontcontroller.respositories.AuthenticationRepository;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
@@ -27,6 +28,9 @@ public class AuthenticationService {
 
 	@Autowired @Qualifier("redis")
 	private RedisTemplate<String, String> template;
+
+	@Autowired
+	private AuthenticationRepository auRepo;
 
 	public static final String url = "https://auth.chuklee.com/api/authenticate";
 	int count_tries = 0;
@@ -51,6 +55,7 @@ public class AuthenticationService {
 		RestTemplate template = new RestTemplate();
 
 		resp = template.exchange(req, String.class);
+		this.template.opsForValue().set("authenticated", user.ForUsernameToJSON().toString());
 		//String payload = resp.getBody();
 		// JsonReader jsr = Json.createReader(new StringReader(payload));
 		// JsonObject jso = jsr.readObject();
@@ -65,11 +70,8 @@ public class AuthenticationService {
 	// DO NOT CHANGE THE METHOD'S SIGNATURE
 	// Write an implementation to disable a user account for 30 mins
 	public void disableUser(String username) {
-		User user =new User();
-		user.setUsername(username);
-		long timeout= 30;
-		TimeUnit unit= TimeUnit.MINUTES;
-		this.template.opsForValue().set("username", user.ForUsernameToJSON().toString(),timeout,unit);
+		auRepo.disableUser(username);
+	
 
 	}
 
@@ -77,6 +79,7 @@ public class AuthenticationService {
 	// DO NOT CHANGE THE METHOD'S SIGNATURE
 	// Write an implementation to check if a given user's login has been disabled
 	public boolean isLocked(String username) {
+		auRepo.getAuthenticate(username);
 		return false;
 	}
 
