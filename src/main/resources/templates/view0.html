@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+	TODO: Task 1, Task 2, Task 3
+-->
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Login</title>
+</head>
+
+<body>
+
+	<h2>Please Login</h2>
+	<form method="POST" data-th-action="@{/login}" data-th-object="${user}">
+		<table>
+			<tr>
+				<td>
+					<label for="username">Username:</label>
+				</td>
+				<td>
+					<input type="text" id="username" size="30" placeholder="Please type in your username"
+						data-th-field="*{username}">
+					<div data-th-if="${#fields.hasErrors('username')}">
+						<span data-th-errors="*{username}"></span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="password">Password:</label>
+				</td>
+				<td>
+					<input type="password" id="password" size="30" placeholder="Please type in your password"
+						data-th-field="*{password}">
+					<div data-th-if="${#fields.hasErrors('password')}">
+						<span data-th-errors="*{password}"></span>
+					</div>
+				</td>
+			</tr>
+			<tr></tr>
+			<tr></tr>
+			<tr></tr>
+			<div data-th-if="${user.count!=0}">
+				<td>
+					<label for="captchat">What is:</label>
+				</td>
+				<td>
+					<div id="captcha" data-th-text="*{captcha}"></div>
+				</td>
+				<tr></tr>
+				<td>
+					<label for="answer">Answer:</label>
+				</td>
+				<td>
+					<input type="text" id="answer" size="30" placeholder="Answer" data-th-field="*{answer}">
+					<div data-th-if="${#fields.hasErrors('answer')}">
+						<span data-th-errors="*{answer}"></span>
+					</div>
+				</td>
+			</div>
+			<tr>
+				<td></td>
+				<td>
+					<button>Login</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+
+</body>
+
+</html>
